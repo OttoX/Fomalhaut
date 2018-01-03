@@ -1,0 +1,39 @@
+# System files
+.DS_Store
+
+# IDE files
+.idea/*
+.ycm_extra_conf.py
+.ycm_extra_conf.pyc
+
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+build*/
+/.vs/*
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
