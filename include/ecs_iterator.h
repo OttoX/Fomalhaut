@@ -46,7 +46,7 @@ namespace ecs
 		public:
 			ComponentIterator(EntityAdmin* admin, Pr& pred, bool is_begin = true) : admin_(admin), pred_(pred), cursor_(0)
 			{
-				size_ = admin_->GetComponentPool().GetAllComponents(details::ComponentIndex::index<T>()).size();
+				size_ = admin_->GetAllComponents(details::ComponentIndex::index<T>()).size();
 				if (!is_begin) {
 					cursor_ = size_;
 				}
@@ -54,7 +54,7 @@ namespace ecs
 			}
 			size_t index() const { return cursor_; }
 			PointerType Component() {
-				ComponentVector& vec = admin_->GetComponentPool().GetAllComponents(details::ComponentIndex::index<T>());
+				ComponentVector& vec = admin_->GetAllComponents(details::ComponentIndex::index<T>());
 				return vec.at(index())->template As<RawType>();
 			}
 			bool operator!=(const ComponentIterator& rhs) const { return !(this->index() == rhs.index()); }
@@ -74,7 +74,7 @@ namespace ecs
 			}
 		};
 	};
-	/*
+
 	template <typename... Args>
 	class TupleItr
 	{
@@ -83,7 +83,7 @@ namespace ecs
 		static_assert(sizeof...(Args) != 1, "use ComponentItr<T> to iterate!");
 		class TupleIterator;
 		using Iterator = TupleIterator;
-		using Pr = typename std::function<bool(typename const details::remove_const_and_reference<Args>::type* ...)>;
+		using Pr = typename std::function<bool(const typename details::remove_const_and_reference<Args>::type* ...)>;
 		using ValueType = std::tuple<typename details::remove_const_and_reference<Args>::type* ...>;
 		using FirstArgType = typename std::remove_pointer<typename std::tuple_element<0, ValueType>::type>::type;
 
@@ -117,7 +117,7 @@ namespace ecs
 		public:
 			TupleIterator(EntityAdmin* admin, Pr& pred, bool is_begin = true) : admin_(admin), pred_(pred), cursor_(0)
 			{
-				size_ = admin_->GetComponentPool().GetAllComponents(details::ComponentIndex::index<FirstArgType>()).size();
+				size_ = admin_->GetAllComponents(details::ComponentIndex::index<FirstArgType>()).size();
 				if (!is_begin) {
 					cursor_ = size_;
 				}
@@ -125,7 +125,7 @@ namespace ecs
 			}
 			size_t index() const { return cursor_; }
 			FirstArgType* Component() {
-				ComponentVector& vec = admin_->GetComponentPool().GetAllComponents(details::ComponentIndex::index<FirstArgType>());
+				ComponentVector& vec = admin_->GetAllComponents(details::ComponentIndex::index<FirstArgType>());
 				return vec.at(index())->template As<FirstArgType>();
 			}
 			bool operator!=(const TupleIterator& rhs) const { return !(this->index() == rhs.index()); }
@@ -150,7 +150,7 @@ namespace ecs
 				while (cursor_ < size_)
 				{
 					Entity* ent = Component()->Owner();
-					if (ent && ent->Has<Args...>() && (!pred_ || pred_ && details::apply(pred_, ent->Get<Args...>())))
+					if (ent && ent->Has<Args...>() && (!pred_ || (pred_ && details::apply(pred_, ent->Get<Args...>()))))
 					{
 						break;
 					}
@@ -159,5 +159,4 @@ namespace ecs
 			}
 		};
 	};
-	*/
 }

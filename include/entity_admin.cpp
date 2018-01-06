@@ -1,4 +1,5 @@
 #include "entity_admin.h"
+#include "entity_admin.h"
 
 using namespace ecs;
 
@@ -46,4 +47,9 @@ void EntityAdmin::DestroyAllEntities()
 		delete kv.second;
 	}
 	entities_.clear();
+}
+
+ComponentVector& EntityAdmin::GetAllComponents(index_t id)
+{
+	return component_pool_.GetAllComponents(id);
 }

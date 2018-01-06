@@ -78,44 +78,45 @@ int main()
 {
     EntityAdmin admin;
     Entity& entity = admin.CreateEntity<Entity>();
-    entity.Add<PositionComponent>(3.f, 7.f, 10.f);
+	float fZ = 10.f;
+    entity.Add<PositionComponent>(3.f, 7.f, fZ);
     // entity.Add<PositionComponent>(22.f, 23.f, 24.f); //throw exception
 	std::cout << "entity replace PositionComponent: " << std::endl;
     entity.Replace<PositionComponent>(10.f, 100.f, 100.f);
     entity.Add<HealthComponent>(50.f, 70.f);
 
-    std::cout << "entity contains PositionComponent and HealthComponent: "
-              << entity.Has<PositionComponent, HealthComponent>() << std::endl;
-    std::cout << "entity contains PositionComponent and HealthComponent and MovementComponent: "
-              << entity.Has<PositionComponent, HealthComponent, MovementComponent>() << std::endl;
+	std::cout << "entity contains PositionComponent and HealthComponent: "
+		<< entity.Has<PositionComponent, HealthComponent>() << std::endl;
+	std::cout << "entity contains PositionComponent and HealthComponent and MovementComponent: "
+		<< entity.Has<PositionComponent, HealthComponent, MovementComponent>() << std::endl;
 
 	std::cout << "entity remove PositionComponent and HealthComponent: " << std::endl;
-    entity.Remove<PositionComponent, HealthComponent>();
+	entity.Remove<PositionComponent, HealthComponent>();
 
-    entity.Add<PositionComponent>(10.f, 20.f, 30.f);
-    std::cout << "entity contains HealthComponent: " 
+	entity.Add<PositionComponent>(10.f, 20.f, 30.f);
+	std::cout << "entity contains HealthComponent: "
 		<< entity.Has<HealthComponent>() << std::endl;
 	entity.Add<HealthComponent>(50.f, 70.f);
 
 	std::cout << std::endl;
-    Entity& entity2 = admin.CreateEntity<Entity>();
-    entity2.Add<PositionComponent>(3.f, 4.f, 5.f);
-    entity2.Add<HealthComponent>(20.f, 70.f);
+	Entity& entity2 = admin.CreateEntity<Entity>();
+	entity2.Add<PositionComponent>(3.f, 4.f, 5.f);
+	entity2.Add<HealthComponent>(20.f, 70.f);
 
 	std::cout << "entity2 Get PositionComponent:" << std::endl;
-    auto val1 = entity2.Get<PositionComponent>();
+	auto val1 = entity2.Get<PositionComponent>();
 	val1->Print();
 
 	std::cout << "entity2 Get PositionComponent and HealthComponent:" << std::endl;
-    std::tuple<PositionComponent*, HealthComponent*> va12 = entity2.Get<PositionComponent, HealthComponent>();
-    std::get<0>(va12)->Print();
-    std::get<1>(va12)->Print();
+	std::tuple<PositionComponent*, HealthComponent*> va12 = entity2.Get<PositionComponent, HealthComponent>();
+	std::get<0>(va12)->Print();
+	std::get<1>(va12)->Print();
 
 	std::cout << std::endl;
-    auto va13 = entity2.Get<PositionComponent, HealthComponent, MovementComponent>();
-    assert((std::get<0>(va13) == nullptr) && (std::get<0>(va13) == nullptr) &&
-           (std::get<0>(va13) == nullptr));
-	/*
+	auto va13 = entity2.Get<PositionComponent, HealthComponent, MovementComponent>();
+	assert((std::get<0>(va13) == nullptr) && (std::get<0>(va13) == nullptr) &&
+		(std::get<0>(va13) == nullptr));
+	
 	std::cout << "ComponentItr HealthComponent: with Condition(hp > 30)" << std::endl;
     for (HealthComponent* h : ComponentItr<HealthComponent>(
              &admin, [](const HealthComponent* h) -> bool { return h->hp > 30.f; })) {
@@ -128,8 +129,8 @@ int main()
 	entity3.Add<MovementComponent>(100.f);
 
     std::cout << "TupleItr PositionComponent, HealthComponent with Condition(hp > 60): " << std::endl;
-    for (std::tuple<PositionComponent*, HealthComponent*>&t : TupleItr<PositionComponent, HealthComponent>(
-             &admin, [](const PositionComponent*p, const HealthComponent*h) -> bool { return h->hp > 60; })) {
+    for (std::tuple<PositionComponent*, HealthComponent*>&& t : TupleItr<PositionComponent, HealthComponent>(
+             &admin, [](const PositionComponent*p, const HealthComponent* h) -> bool { return h->hp > 60; })) {
         std::get<0>(t)->Print();
         std::get<1>(t)->Print();
     }
@@ -138,7 +139,7 @@ int main()
 	std::cout << "Update DemoSystem: " << std::endl;
 	DemoSystem& sys = admin.CreateSystem<DemoSystem>();
 	sys.Update(0.1f);
-	*/
+	
     std::cin.get();
     return 0;
 }

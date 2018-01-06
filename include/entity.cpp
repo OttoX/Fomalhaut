@@ -1,58 +1,12 @@
 
 #include "entity.h"
-#include "entity_admin.h"
 #include "base_component.h"
 
 using namespace ecs;
 
+Entity::Entity(ComponentPool& pool, EntityID eid) : pool_(pool), eid_(eid) {}
 
-template <typename T, typename... TArgs>
-auto Entity::Add(TArgs&&... args) -> Entity&
-{
-	ComponentPool& pool = entity_admin_->GetComponentPool();
-	return AddComponent(details::ComponentIndex::index<T>(), pool.CreateComponent<T>(std::forward<TArgs>(args)...));
-}
-
-template <typename Arg>
-auto Entity::Remove() -> Entity&
-{
-	return RemoveComponent(details::ComponentIndex::index<Arg>());
-}
-template <typename Arg0, typename... Args>
-auto Entity::Remove() -> typename std::enable_if<sizeof...(Args) != 0, Entity&>::type
-{
-	return RemoveComponent(details::ComponentIndex::index<Arg0>()), Remove<Args...>();
-}
-
-template <typename T, typename... TArgs>
-auto Entity::Replace(TArgs&&... args) -> Entity&
-{
-	ComponentPool& pool = entity_admin_->GetComponentPool();
-	return ReplaceComponent(details::ComponentIndex::index<T>(),
-		pool.CreateComponent<T>(std::forward<TArgs>(args)...));
-}
-
-template <typename T>
-auto Entity::Get() const -> T*
-{
-	return static_cast<T*>(GetComponent(details::ComponentIndex::index<T>()));
-}
-
-template <typename Arg>
-bool Entity::Has() const
-{
-	return HasComponent(details::ComponentIndex::index<Arg>());
-}
-
-template<typename Arg0, typename ...Args>
-auto Entity::Has() const -> typename std::enable_if<sizeof ...(Args) != 0, bool>::type
-{
-	return HasComponent(details::ComponentIndex::index<Arg0>()) && Has<Args...>();
-}
-
-Entity::Entity(EntityAdmin* admin, EntityID eid) : entity_admin_(admin), eid_(eid) {}
-
-Entity::~Entity() 
+Entity::~Entity()
 {
 	DestroyAllComponent();
 }
@@ -118,8 +72,8 @@ void Entity::ReplaceWith(const index_t index, BaseComponent * replacement)
 	}
 	else
 	{
-		 ComponentPool& pool = entity_admin_->GetComponentPool();
-		 pool.RemoveComponent(index, prev_component);
+		//onRemove
+		pool_.RemoveComponent(index, prev_component);
 		if (replacement == nullptr)
 		{
 			components_.erase(index);
@@ -134,9 +88,10 @@ void Entity::ReplaceWith(const index_t index, BaseComponent * replacement)
 
 void Entity::DestroyAllComponent()
 {
-	ComponentPool& pool = entity_admin_->GetComponentPool();
 	for (const auto& kv : components_)
 	{
-		pool.RemoveComponent(kv.first, kv.second);
+		//onRemove()
+		pool_.RemoveComponent(kv.first, kv.second);
 	}
+	components_.clear();
 }

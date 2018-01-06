@@ -22,9 +22,6 @@ namespace ecs
 	public:
 		EntityAdmin() = default;
 		~EntityAdmin();
-
-		ComponentPool& GetComponentPool() { return component_pool_; }
-
 		void Update(float time_step);
 
 		template<class S>
@@ -46,6 +43,7 @@ namespace ecs
 			return ++start_id;
 		}
 
+		ComponentVector& GetAllComponents(index_t id);
 	private:
 		void DestoryAllSysytems();
 		void DestroyAllEntities();
@@ -86,7 +84,7 @@ namespace ecs
 	{
 		ECS_ASSERT_IS_ENTITY(E);
 		EntityID eid = GenerateEntityID();
-		Entity* ent = new E(this, eid);
+		Entity* ent = new E(component_pool_, eid);
 		entities_.insert(std::make_pair(eid, ent));
 		return *ent;
 	}
