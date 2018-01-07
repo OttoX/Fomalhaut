@@ -51,8 +51,8 @@ include_directories( ${PROJ_INCLUDES} ${LIB_INCLUDES} ${PROJ_TEST_INCLUDES})
 
 # Tests
 enable_testing()
-add_executable( UnitTests ${PROJ_TEST_SOURCES} test/ecs.cpp ${PROJ_TEST_HEADERS} ${PROJ_HEADERS})
-add_executable( Example examples/example.cpp ${PROJ_SOURCES} ${PROJ_HEADERS})
+add_executable( UnitTests ${PROJ_TEST_SOURCES} test/ecs.cpp ${PROJ_TEST_HEADERS} ${PROJ_SOURCES})
+add_executable( Example examples/example.cpp ${PROJ_SOURCES})
 
 add_test( UnitTests UnitTests)
 

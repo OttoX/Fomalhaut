@@ -29,7 +29,7 @@ namespace ecs
 		template<class S>
 		void RemoveSystem();
 		template<class S>
-		bool ExistSystem();
+		bool HasSystem();
 
 		template<class E>
 		Entity& CreateEntity();
@@ -53,7 +53,7 @@ namespace ecs
 	S& EntityAdmin::CreateSystem()
 	{
 		ECS_ASSERT_IS_SYSTEM(S);
-		ECS_ASSERT(!ExistSystem<S>(), "System already exists");
+		ECS_ASSERT(!HasSystem<S>(), "System already exists");
 		index_t system_index = details::SystemIndex::index<S>();
 		if (system_index >= systems_.size()) {
 			systems_.resize(system_index + 1, nullptr);
@@ -67,13 +67,13 @@ namespace ecs
 	void EntityAdmin::RemoveSystem()
 	{
 		ECS_ASSERT_IS_SYSTEM(S);
-		ECS_ASSERT(ExistSystem<S>(), "System does not exist");
+		ECS_ASSERT(HasSystem<S>(), "System not exist");
 		delete systems_[details::SystemIndex::index<S>()];
 		systems_[details::SystemIndex::index<S>()] = nullptr;
 	}
 
 	template<class S>
-	bool EntityAdmin::ExistSystem()
+	bool EntityAdmin::HasSystem()
 	{
 		ECS_ASSERT_IS_SYSTEM(S);
 		return systems_.size() > details::SystemIndex::index<S>() && systems_[details::SystemIndex::index<S>()] != nullptr;

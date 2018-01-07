@@ -1,8 +1,5 @@
 #include <cassert>
 #include <iostream>
-#include "base_component.h"
-#include "base_system.h"
-#include "ecs_define.h"
 #include "ecs_iterator.h"
 #include "entity_admin.h"
 using namespace ecs;

@@ -28,6 +28,7 @@ void ecs::EntityAdmin::DestroyEntity(EntityID eid)
 	if (it != entities_.end())
 	{
 		delete it->second;
+		entities_.erase(it);
 	}
 }
 

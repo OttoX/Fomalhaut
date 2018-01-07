@@ -132,12 +132,8 @@ namespace ecs
 			ValueType operator*() 
 			{ 
 				Entity* ent = Component()->Owner();
-				if (ent)
-				{
-					return ValueType(ent->Get<Args...>());
-				}
-				throw std::runtime_error("Error, TupleItr operator '*' must not be nullptr value");
-				return ValueType();
+				ECS_ASSERT(ent, "Error, TupleItr operator '*' must not be nullptr value");
+				return ValueType(ent->Get<Args...>());
 			}
 			TupleIterator& operator++()
 			{

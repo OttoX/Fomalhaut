@@ -17,18 +17,19 @@ Entity& Entity::AddComponent(const index_t index, BaseComponent* component)
 	{
 		throw std::runtime_error("Error, cannot add component to entity, component already exists");
 	}
+	//ECS_ASSERT(!HasComponent(index), "Error, cannot add component to entity, component already exists");
 	components_[index] = component;
 	component->SetOwner(this);
 	return *this;
 }
 
 Entity& Entity::RemoveComponent(const index_t index) 
-{ 
+{
 	if (!HasComponent(index))
 	{
 		throw std::runtime_error("Error, cannot remove component to entity, component not exists");
 	}
-
+	//ECS_ASSERT(HasComponent(index), "Error, cannot remove component to entity, component not exists");
 	ReplaceWith(index, nullptr);
 	return *this;
 }

@@ -7,7 +7,6 @@
 namespace ecs {
 	class ComponentPool;
 	class Entity {
-		friend class BaseComponent;
 	private:
 		ComponentPool& pool_;
 		EntityID eid_;
@@ -16,6 +15,8 @@ namespace ecs {
 	public:
 		Entity(ComponentPool& pool, EntityID eid);
 		virtual ~Entity();
+
+		EntityID GetEntityID() const { return eid_; }
 
 		template <typename T, typename... TArgs>
 		auto Add(TArgs&&... args)->Entity&;
@@ -31,24 +32,17 @@ namespace ecs {
 		template <typename T>
 		auto Get() const->T*;
 		template <typename... Args>
-		auto Get() const -> typename std::enable_if<(sizeof...(Args) != 1),
-			std::tuple<Args*...> >::type {
-			using ValueType = std::tuple<Args*...>;
-			if (Has<Args...>()) {
-				return ValueType(Get<Args>()...);
-			}
-			return ValueType();
-		}
+		auto Get() const -> typename std::enable_if<(sizeof...(Args) != 1), std::tuple<Args*...> >::type;
 
 		template <typename Arg>
 		bool Has() const;
 		template <typename Arg0, typename... Args>
 		auto Has() const -> typename std::enable_if<sizeof...(Args) != 0, bool>::type;
 
+		BaseComponent* GetComponent(const index_t index) const;
 	private:
 		Entity& AddComponent(const index_t index, BaseComponent* component);
 		Entity& RemoveComponent(const index_t index);
-		BaseComponent* GetComponent(const index_t index) const;
 		Entity& ReplaceComponent(const index_t index, BaseComponent* component);
 		bool HasComponent(const index_t index) const;
 		void Destroy();
@@ -84,6 +78,16 @@ namespace ecs {
 	template <typename T>
 	auto Entity::Get() const -> T* {
 		return static_cast<T*>(GetComponent(details::ComponentIndex::index<T>()));
+	}
+
+	template<typename ...Args>
+	auto ecs::Entity::Get() const -> typename std::enable_if<(sizeof ...(Args) != 1), std::tuple<Args *...>>::type
+	{
+		using ValueType = std::tuple<Args*...>;
+		if (Has<Args...>()) {
+			return ValueType(Get<Args>()...);
+		}
+		return ValueType();
 	}
 
 	template <typename Arg>
