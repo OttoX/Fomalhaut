@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ecs_functional.h"
-//#include "entity.h"
 
 namespace ecs
 {

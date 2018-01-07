@@ -18,8 +18,8 @@
 #include <stdexcept>
 #include "common/thirdparty/catch.hpp"
 
-#define ECS_ASSERT(Expr, Msg) if(!(Expr)) throw std::runtime_error(Msg);
 
+#define ECS_ASSERT(Expr, Msg) if(!(Expr)) throw std::runtime_error(Msg);
 
 #include "ecs_iterator.h"
 #include "entity_admin.h"
