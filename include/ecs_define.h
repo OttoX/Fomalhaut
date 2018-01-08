@@ -12,6 +12,8 @@ namespace ecs
 	using index_t = uint32_t;
 	using ComponentIndexList = std::vector<index_t>;
 
+#define ECS_ASSERT(Expr, Msg) if(!(Expr)) throw std::runtime_error(Msg);
+
 #ifndef ECS_ASSERT
 #define ECS_ASSERT(Expr, Msg) assert(Expr && Msg)
 #pragma message("ECS_ASSERT defined!")
