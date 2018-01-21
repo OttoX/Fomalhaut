@@ -3,7 +3,8 @@
 
 ## Overview
 This is a simple entity component system library based on the [Overwatch Gameplay Architecture and Netcode](http://gad.qq.com/article/detail/28682) article. It is written in c++11 without other dependencies. You can easily add include folder into your game project.
-
+##### NOTE:
+This is my thought about how the 'OverWatch' ECS should look. If you want to add it to a commercial project, you'd better read the source code and master it, then add feature that you need.
 ## Support
 * gcc >= 4.8 (tested with v4.8.4)
 * clang
@@ -16,11 +17,11 @@ This is a simple entity component system library based on the [Overwatch Gamepla
 
 ## Tutorial
 
-####Create An EntityAdmin
+#### Create An EntityAdmin
 EntityAdmin controlls all entities and systems. You can simply define it by the following code:
 <pre><code>EntityAdmin admin; </code></pre>    
 
-####Create Component
+#### Create Component
 Declare some components from BaseComponent such as:
 <pre><code>class MovementComponent : public BaseComponent
 {
@@ -54,7 +55,7 @@ public:
 };
 </code></pre>
 
-####Create An Entity
+#### Create An Entity
 Entity is an aggregate that consists of one or more components.It was created by An EntityAdmin.
 <pre><code>Entity& entity = admin.CreateEntity&lt;Entity>();</code></pre>
 You can simply add or replace component by:
@@ -74,7 +75,7 @@ You can use tuple to get more componets by:
 std::tuple&lt;PositionComponent*, HealthComponent*> va1 = entity.Get&lt;PositionComponent, HealthComponent>();
 </code></pre>
 
-####Create A Demosystem And Iterate Components
+#### Create A Demosystem And Iterate Components
 <pre><code>class DemoSystem : public BaseSystem
 {
 public:
