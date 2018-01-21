@@ -29,7 +29,7 @@ public:
     void Reset(float velocity) { this->velocity = velocity; }
     void Print() { std::cout << "MovementComponent: " << velocity << std::endl; }
     float velocity;
-}
+};
 class HealthComponent : public BaseComponent
 {
 public:
@@ -62,15 +62,15 @@ You can simply add or replace component by:
 <pre><code>entity.Add&lt;PositionComponent>(3.f, 7.f, 10Z);
 entity.Replace&lt;PositionComponent>(10.f, 100.f, 100.f);
 </code></pre>
-You can check enity has some components by:
+To check whether entity  has some components:
 <pre><code>bool result = entity.Has&lt;HealthComponent>();
 bool result = entity.Has&lt;PositionComponent, HealthComponent>();
 </code></pre>
-You can remove one or more components by:
+Remove one or more components:
 <pre><code>entity.Remove&lt;PositionComponent>();
 entity.Remove&lt;PositionComponent, HealthComponent>();
 </code></pre>
-You can use tuple to get more componets by:
+Use tuple to get some componets one-time:
 <pre><code>PositionComponent* p = entity.Get&lt;PositionComponent>();
 std::tuple&lt;PositionComponent*, HealthComponent*> va1 = entity.Get&lt;PositionComponent, HealthComponent>();
 </code></pre>
@@ -94,7 +94,7 @@ public:
 DemoSystem& sys = admin.CreateSystem&lt;DemoSystem>();
 sys.Update(0.1f);
 </code></pre>
-You Also can use tuple-iterator to iterate Enity that has specific components with specific condition:
+Use tuple-iterator to iterate Entity that has specific components with specific condition:
 <pre><code>for (std::tuple&lt;PositionComponent*, HealthComponent*>&& t : TupleItr&lt;PositionComponent, HealthComponent>(
              &admin, [](const PositionComponent*p, const HealthComponent* h) -> bool { return h->hp > 60; })) 
 {
