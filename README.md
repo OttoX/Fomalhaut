@@ -22,7 +22,7 @@ EntityAdmin controlls all entities and systems. You can simply define it by the 
 <pre><code>EntityAdmin admin; </code></pre>    
 
 #### Create Component
-Declare some components from BaseComponent such as:
+Declare some components that derived from BaseComponent such as:
 <pre><code>class MovementComponent : public BaseComponent
 {
 public:
@@ -56,7 +56,7 @@ public:
 </code></pre>
 
 #### Create An Entity
-Entity is an aggregate that consists of one or more components.It was created by An EntityAdmin.
+Entity is an aggregate that consists of one or more components. It was created by An EntityAdmin.
 <pre><code>Entity& entity = admin.CreateEntity&lt;Entity>();</code></pre>
 You can simply add or replace component by:
 <pre><code>entity.Add&lt;PositionComponent>(3.f, 7.f, 10Z);
