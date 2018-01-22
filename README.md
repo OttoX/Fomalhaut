@@ -59,7 +59,7 @@ public:
 Entity is an aggregate that consists of one or more components. It was created by An EntityAdmin.
 <pre><code>Entity& entity = admin.CreateEntity&lt;Entity>();</code></pre>
 You can simply add or replace component by:
-<pre><code>entity.Add&lt;PositionComponent>(3.f, 7.f, 10Z);
+<pre><code>entity.Add&lt;PositionComponent>(3.f, 7.f, 10.f);
 entity.Replace&lt;PositionComponent>(10.f, 100.f, 100.f);
 </code></pre>
 To check whether entity  has some components:
