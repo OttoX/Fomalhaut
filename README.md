@@ -62,7 +62,7 @@ You can simply add or replace component by:
 <pre><code>entity.Add&lt;PositionComponent>(3.f, 7.f, 10.f);
 entity.Replace&lt;PositionComponent>(10.f, 100.f, 100.f);
 </code></pre>
-To check whether entity  has some components:
+To check whether entity  has any components:
 <pre><code>bool result = entity.Has&lt;HealthComponent>();
 bool result = entity.Has&lt;PositionComponent, HealthComponent>();
 </code></pre>
