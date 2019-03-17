@@ -8,6 +8,15 @@ namespace ecs
 {
     namespace details
     {
+		template<class...> struct conjunction : std::true_type { };
+		template<class B1> struct conjunction<B1> : B1 { };
+		template<class B1, class... Bn>
+		struct conjunction<B1, Bn...>
+			: std::conditional_t<bool(B1::value), conjunction<Bn...>, B1> {};
+		template<class... B>
+		constexpr bool conjunction_v = conjunction<B...>::value;
+
+
 		template <typename T>
 		struct remove_const_and_reference
 		{
@@ -84,8 +93,6 @@ namespace ecs
 
 			typedef std::tuple<Args...> args;
 		};
-
-
         template <typename T>
         struct is_callable {
             template <typename U>

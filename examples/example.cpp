@@ -76,12 +76,11 @@ int main()
     EntityAdmin admin;
     Entity& entity = admin.CreateEntity<Entity>();
 	float fZ = 10.f;
-    entity.Add<PositionComponent>(3.f, 7.f, fZ);
-    // entity.Add<PositionComponent>(22.f, 23.f, 24.f); //throw exception
+	entity.Add<PositionComponent>(3.f, 7.f, fZ);
+	// entity.Add<PositionComponent>(22.f, 23.f, 24.f); //throw exception
 	std::cout << "entity replace PositionComponent: " << std::endl;
-    entity.Replace<PositionComponent>(10.f, 100.f, 100.f);
-    entity.Add<HealthComponent>(50.f, 70.f);
-
+	entity.Replace<PositionComponent>(10.f, 100.f, 100.f);
+	entity.Add<HealthComponent>(50.f, 70.f);
 	std::cout << "entity contains PositionComponent and HealthComponent: "
 		<< entity.Has<PositionComponent, HealthComponent>() << std::endl;
 	std::cout << "entity contains PositionComponent and HealthComponent and MovementComponent: "
@@ -113,30 +112,29 @@ int main()
 	auto va13 = entity2.Get<PositionComponent, HealthComponent, MovementComponent>();
 	assert((std::get<0>(va13) == nullptr) && (std::get<0>(va13) == nullptr) &&
 		(std::get<0>(va13) == nullptr));
-	
+
 	std::cout << "ComponentItr HealthComponent: with Condition(hp > 30)" << std::endl;
-    for (HealthComponent* h : ComponentItr<HealthComponent>(
-             &admin, [](const HealthComponent* h) -> bool { return h->hp > 30.f; })) {
-        h->Print();
-    }
+	for (HealthComponent* h : ComponentItr<HealthComponent>(
+		&admin, [](const HealthComponent* h) -> bool { return h->hp > 30.f; })) {
+		h->Print();
+	}
 
 	Entity& entity3 = admin.CreateEntity<Entity>();
 	entity3.Add<PositionComponent>(3.f, 4.f, 5.f);
 	entity3.Add<HealthComponent>(80.f, 70.f);
 	entity3.Add<MovementComponent>(100.f);
 
-    std::cout << "TupleItr PositionComponent, HealthComponent with Condition(hp > 60): " << std::endl;
-    for (std::tuple<PositionComponent*, HealthComponent*>&& t : TupleItr<PositionComponent, HealthComponent>(
-             &admin, [](const PositionComponent*p, const HealthComponent* h) -> bool { return h->hp > 60; })) {
-        std::get<0>(t)->Print();
-        std::get<1>(t)->Print();
-    }
+	std::cout << "ComponentItr PositionComponent, HealthComponent with Condition(hp > 60): " << std::endl;
+	for (std::tuple<PositionComponent*, HealthComponent*>&& t : ComponentItr<PositionComponent, HealthComponent>(
+		&admin, [](const PositionComponent*p, const HealthComponent* h) -> bool { return h->hp > 60; })) {
+		std::get<0>(t)->Print();
+		std::get<1>(t)->Print();
+	}
 
 	std::cout << std::endl;
 	std::cout << "Update DemoSystem: " << std::endl;
 	DemoSystem& sys = admin.CreateSystem<DemoSystem>();
 	sys.Update(0.1f);
-	
     std::cin.get();
     return 0;
 }

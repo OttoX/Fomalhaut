@@ -254,7 +254,7 @@ SCENARIO("Testing ecs framework, unittests") {
 				}
 				THEN("Iterating MovementComponent And HealthComponent") {
 					int count = 0;
-					for (std::tuple<MovementComponent*, HealthComponent*>&& t : TupleItr<MovementComponent, HealthComponent>(&admin)) {
+					for (std::tuple<MovementComponent*, HealthComponent*>&& t : ComponentItr<MovementComponent, HealthComponent>(&admin)) {
 						REQUIRE(std::get<0>(t) != nullptr);
 						REQUIRE(std::get<1>(t) != nullptr);
 						count++;
@@ -263,7 +263,7 @@ SCENARIO("Testing ecs framework, unittests") {
 				}
 				THEN("Iterating MovementComponent And HealthComponent with velocity > 30 and hp > 33") {
 					int count = 0;
-					for (std::tuple<MovementComponent*, HealthComponent*>&& t : TupleItr<MovementComponent, HealthComponent>(&admin,
+					for (std::tuple<MovementComponent*, HealthComponent*>&& t : ComponentItr<MovementComponent, HealthComponent>(&admin,
 						[](const MovementComponent* m, const HealthComponent* h) -> bool { return (m->velocity > 30.f && h->hp > 33.f); })) {
 						REQUIRE(std::get<0>(t) != nullptr);
 						REQUIRE(std::get<1>(t) != nullptr);
@@ -273,7 +273,7 @@ SCENARIO("Testing ecs framework, unittests") {
 				}
 				THEN("Iterating MovementComponent, HealthComponent And PositionComponent with hp > 80") {
 					int count = 0;
-					for (auto&& t : TupleItr<MovementComponent, HealthComponent, PositionComponent>(&admin,
+					for (auto&& t : ComponentItr<MovementComponent, HealthComponent, PositionComponent>(&admin,
 						[](const MovementComponent* m, const HealthComponent* h, const PositionComponent* p) -> bool { return h->hp > 80.f; })) {
 						REQUIRE(std::get<0>(t) != nullptr);
 						REQUIRE(std::get<1>(t) != nullptr);

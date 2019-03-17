@@ -1,12 +1,12 @@
 ## Fomalhaut
-#### A clean, simple, c++11, Entity Component System like Overwatch ECS architecture
+#### A clean, simple, c++14, Entity Component System like Overwatch ECS architecture
 
 ## Overview
-This is a simple entity component system library based on the [Overwatch Gameplay Architecture and Netcode](http://gad.qq.com/article/detail/28682) article. It is written in c++11 without other dependencies. You can easily add include-folder into your game project.
+This is a simple entity component system library based on the [Overwatch Gameplay Architecture and Netcode](http://gad.qq.com/article/detail/28682) article. It is written in c++14 without other dependencies. You can easily add include-folder into your game project.
 ##### NOTE:
 This is my thought about how the 'Overwatch' ECS should look. If you want to add it to a commercial project, you'd better read the source code and master it. Then add the features that you need.
-## Support
-* gcc >= 4.8 (tested with v4.8.4)
+## Support（Need C++14)
+* gcc >= v5 (tested with v5.4.0)
 * clang
 * MSVC >= VS2015
 
@@ -95,7 +95,7 @@ DemoSystem& sys = admin.CreateSystem&lt;DemoSystem>();
 sys.Update(0.1f);
 </code></pre>
 Use tuple-iterator to iterate Entity that has specific components with specific condition:
-<pre><code>for (std::tuple&lt;PositionComponent*, HealthComponent*>&& t : TupleItr&lt;PositionComponent, HealthComponent>(
+<pre><code>for (std::tuple&lt;PositionComponent*, HealthComponent*>&& t : ComponentItr&lt;PositionComponent, HealthComponent>(
              &admin, [](const PositionComponent*p, const HealthComponent* h) -> bool { return h->hp > 60; })) 
 {
     std::get&lt;0>(t)->Print();
