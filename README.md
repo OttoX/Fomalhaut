@@ -2,10 +2,10 @@
 #### A clean, simple, c++14, Entity Component System like Overwatch ECS architecture
 
 ## Overview
-This is a simple entity component system library based on the [Overwatch Gameplay Architecture and Netcode](http://gad.qq.com/article/detail/28682) article. It is written in c++14 without other dependencies. You can easily add include-folder into your game project.
+This is a simple entity component system library based on the [Overwatch Gameplay Architecture and Netcode](https://www.youtube.com/watch?v=W3aieHjyNvw) article. It is written in c++14 without other dependencies. You can easily add include-folder into your game project.
 ##### NOTE:
 This is my thought about how the 'Overwatch' ECS should look. If you want to add it to a commercial project, you'd better read the source code and master it. Then add the features that you need.
-## Support（Need C++14)
+## Support(Need C++14)
 * gcc >= v5 (tested with v5.4.0)
 * clang
 * MSVC >= VS2015
