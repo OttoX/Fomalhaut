@@ -1,61 +1,27 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.5)
 
-set( PROJ_NAME      "Fomalhaut" )
-set( PROJ_PATH      ${CMAKE_SOURCE_DIR} )
-set( PROJ_OUT_PATH  ${CMAKE_BINARY_DIR} )
-set( PROJ_SOURCES   "")
-set( PROJ_HEADERS   "")
-set( PROJ_TEST_SOURCES "")
-set( PROJ_TEST_HEADERS "")
+project(Fomalhaut LANGUAGES CXX)
 
-set( CMAKE_MODULE_PATH "${PROJ_PATH}/cmake")
-set( EXECUTABLE_OUTPUT_PATH ${PROJ_OUT_PATH})
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set( PROJ_LIB_PATH  "${PROJ_PATH}/lib" )
-set( PROJ_INCLUDES  "${PROJ_PATH}/include")
-set( PROJ_TEST_INCLUDES "${PROJ_PATH}/test")
-set( LIB_INCLUDES "${PROJ_LIB_PATH}/include")
+include_directories(
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-project(${PROJ_NAME})
-include(ExternalProject)
+list(APPEND _sources 
+	${CMAKE_CURRENT_LIST_DIR}/include/base_component.cpp
+	${CMAKE_CURRENT_LIST_DIR}/include/base_system.cpp
+	${CMAKE_CURRENT_LIST_DIR}/include/component_pool.cpp
+	${CMAKE_CURRENT_LIST_DIR}/include/entity_admin.cpp
+	${CMAKE_CURRENT_LIST_DIR}/include/entity.cpp
+	)
 
-# Default compiler args
-if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "(GNU|.*Clang)")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Werror -Wall -Wextra -Wno-unused-parameter -Wno-error=unused-variable -Wno-error=sign-compare -std=c++14")
-	set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
-	set(CMAKE_CXX_FLAGS_MINSIZEREL "-g -Os -DNDEBUG")
-	set(CMAKE_CXX_FLAGS_RELEASE "-g -O2 -DNDEBUG")
-	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g")
-elseif("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-	# /Zi - Produces a program database (PDB) that contains type information and symbolic debugging information for use with the debugger.
-	# /FS - Allows multiple cl.exe processes to write to the same .pdb file
-	# /DEBUG - Enable debug during linking
-	# /Od - Disables optimization
-	set(CMAKE_CXX_FLAGS_DEBUG "/Zi /FS /DEBUG /Od /MDd")
-	# /Ox - Full optimization
-	set(CMAKE_CXX_FLAGS_RELEASE "/Ox -DNDEBUG")
-	set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/Ox /Zi /FS /DEBUG")
-endif()
-
-if (NOT CMAKE_BUILD_TYPE)
-    message("-- Defaulting to release build (use -DCMAKE_BUILD_TYPE:STRING=Debug for debug build)")
-    set(CMAKE_BUILD_TYPE "Release")
-endif()
-
-# Adds sources and headers to project
-file( GLOB_RECURSE PROJ_SOURCES include/*.cpp)
-file( GLOB_RECURSE PROJ_HEADERS include/*.h include/*.inl)
-file( GLOB_RECURSE PROJ_TEST_SOURCES test/common/*.cpp )
-file( GLOB_RECURSE PROJ_TEST_HEADERS test/common/*.hpp )
-include_directories( ${PROJ_INCLUDES} ${LIB_INCLUDES} ${PROJ_TEST_INCLUDES})
-
-# Tests
+add_executable(example examples/example.cpp ${_sources})
+add_executable(ecs_test test/ecs_test.cpp ${_sources})
 enable_testing()
-add_executable( UnitTests ${PROJ_TEST_SOURCES} test/ecs_test.cpp ${PROJ_TEST_HEADERS} ${PROJ_SOURCES} )
-add_executable( Example examples/example.cpp ${PROJ_SOURCES} )
-
-add_test( UnitTests UnitTests)
-
-install(TARGETS UnitTests DESTINATION ${PROJ_OUT_PATH})
-install(TARGETS Example DESTINATION ${PROJ_OUT_PATH})
-
+add_test(
+  NAME catch_test
+  COMMAND $<TARGET_FILE:ecs_test> --success
+  )

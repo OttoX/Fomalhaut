@@ -16,7 +16,9 @@
 
 #include <iostream>
 #include <stdexcept>
-#include "common/thirdparty/catch.hpp"
+
+#define CATCH_CONFIG_MAIN
+#include "catch.hpp"
 
 
 #define ECS_ASSERT(Expr, Msg) if(!(Expr)) throw std::runtime_error(Msg);
